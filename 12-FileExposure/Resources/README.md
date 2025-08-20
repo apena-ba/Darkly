@@ -85,7 +85,7 @@ find ./dump -type f -exec grep flag {} \; -exec echo -e '\n [+] Flag found in fi
 To prevent the unwanted exposure of resources, we must implement a solid server configuration. Additionally, performing testing and security assessments regularly is recommended to ensure there are no misconfurations.
 
 ## ☝️🤓 Advanced explanation
-The script we coded is a recursive web crawler that downloads all files from a given base URL where directory listing is enabled. It recursively goes over routes and saves them, to then download all the files, showing the progress status. 
+The script we coded is a web crawler that downloads all files from a given base URL where directory listing is enabled. It recursively goes over routes and saves them, to then download all the files, showing the progress status. 
 
 Usage:
 ```
