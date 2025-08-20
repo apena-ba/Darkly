@@ -1,11 +1,11 @@
 # File and Directory Exposure via accessible ```.hidden/``` directory
 
 ## 📖 Vulnerability Explanation
-[Explain what the vulnerability is, how it works, and why it's dangerous. Include conditions required for exploitation if applicable.]
+File and directory exposure is a misconfiguration vulnerability that allows an unauthorized user access to sensitive resources.
 
 ## ⚙️ Exploitation Process
 
-- Enumerate the web directories via web fuzzing.
+- Enumerate the web directories via web fuzzing:
 ```
 ffuf -u 'http://localhost:9090/FUZZ' -w /sgoinfre/students/apena-ba/cybersecurity/SecLists/Discovery/Web-Content/big.txt -fs 975
 
@@ -60,18 +60,42 @@ The folder contains one ```README``` file and a tree of directories and subdirec
 
 ---
 
+We coded a script to download all the files recursively present in a web server configured for directory listing.
+
+In order to run it, we must create a python virtual environment and install the required packages using the ```requirements.txt``` file.
+```
+python3 -m venv my-python-env
+```
+```
+./my-python-env/bin/pip3 install -r requirements.txt
+```
+```
+./my-python-env/bin/python3 crawl.py 'http://localhost:9090/.hidden/' ./dump
+```
+
+---
+
 - Look for the flag using the command find:
 
 ```
-find . -type f -exec grep flag {} \; -exec echo -e '\n [+] Flag found in file:' {} '\n' \;
+find ./dump -type f -exec grep flag {} \; -exec echo -e '\n [+] Flag found in file:' {} '\n' \;
 ```
 
-## 🧰 Additional Resources Used *(Optional)*
-- [Tool/Script Name]: [Brief description of purpose]
-- Example: *Custom Python script to exploit XXE and read arbitrary files from the server.*
-
 ## 🔧 Fix
-[Describe how to fix the vulnerability]
+To prevent the unwanted exposure of resources, we must implement a solid server configuration. Additionally, performing testing and security assessments regularly is recommended to ensure there are no misconfurations.
 
 ## ☝️🤓 Advanced explanation
-[Provide advanced explanation for the bonus part]
+The script we coded is a recursive web crawler that downloads all files from a given base URL where directory listing is enabled. It recursively goes over routes and saves them, to then download all the files, showing the progress status. 
+
+Usage:
+```
+python3 crawl.py <url> <directory>
+```
+- **url** → Base URL to crawl
+
+- **directory** → Local folder to save files (created if missing)
+
+Example:
+```
+python3 crawl.py "http://localhost:9090/.hidden/" ./dump
+```

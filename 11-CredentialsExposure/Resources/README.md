@@ -5,7 +5,7 @@ Credential exposure is a misconfiguration vulnerability that happens when privat
 
 ## ⚙️ Exploitation Process
 
-- Enumerate the web directories via web fuzzing.
+- Enumerate the web directories via web fuzzing:
 ```
 ffuf -u 'http://localhost:9090/FUZZ' -w /sgoinfre/students/apena-ba/cybersecurity/SecLists/Discovery/Web-Content/big.txt -fs 975
 
