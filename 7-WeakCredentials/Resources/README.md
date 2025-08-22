@@ -19,7 +19,7 @@ In order to use the http-get-form module, we must define a format string contain
 
 > It looks like any username works for the password _shadow_
 
-## 🧰 Additional Resources
+## 🧰 Additional Resources Used
 Hydra is a brute force attack tool used to test password security on several protocols and services. It uses wordlists as parameters and can be used for both password bruteforcing and password spraying.
 
 - https://github.com/vanhauser-thc/thc-hydra

@@ -59,7 +59,7 @@ root:437394baff5aa33daa618be47b75cb49
 
 Use the credentials obtained to login on the ```admin/``` directory and get the flag.
 
-## 🧰 Additional Resources
+## 🧰 Additional Resources Used
 In order to enumerate web directories we used ```ffuf```, a compiled web fuzzer written in go.
 
 - https://github.com/ffuf/ffuf

