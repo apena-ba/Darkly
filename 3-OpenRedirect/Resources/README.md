@@ -7,7 +7,7 @@ The redirect page uses the url parameter _site_ to make the user follow the redi
 Modify the original url present in the page footer and set the value of the _site_ parameter to something else.
 
 ```
-curl -s 'http://localhost:9090/index.php?page=redirect&site=malicious.com' | grep flag
+curl -s 'http://BornToSec.com/index.php?page=redirect&site=malicious.com' | grep flag
 ```
 
 ## 🔧 Fix

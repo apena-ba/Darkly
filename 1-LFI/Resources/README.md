@@ -3,12 +3,14 @@
 ## 📖 Vulnerability Explanation
 An LFI vulnerability happens when the user's input is not properly sanitized and is used to load a file from the filesystem. This leads to the ability to read files out of the web application directory, such as `/etc/passwd`.
 
-## ⚙️ Exploitation Process
 As the web page uses the parameter `?page=<filename>` to load the different pages in the app, we can escape the application directory by using a relative path to the file `/etc/passwd`.
 
-- Make a request and get the flag:
+## ⚙️ Exploitation Process
+Setting the page to the relative path of the ```/etc/passwd``` file displays the flag.
+
+- Make this request with ```curl``` and get the flag:
 ```
-curl -s 'http://localhost:9090/index.php?page=../../../../../../../etc/passwd' | grep flag
+curl -s 'http://BornToSec.com/index.php?page=../../../../../../../etc/passwd' | grep flag
 ```
 
 ## 🔧 Fix

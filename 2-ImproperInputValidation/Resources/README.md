@@ -3,15 +3,15 @@
 ## 📖 Vulnerability Explanation
 An improper input validation happens when the server trusts the user's input. Attackers can take advantage of this, leading to:
 
-- DoS: Might overload the server or cause unexpected behaviour
-- Injection attacks: If the input is used in file paths or SQL queries
-- Data corruption: Data becomes unreliable
+- **DoS:** Might overload the server or cause unexpected behaviour
+- **Injection attacks:** If the input is used in file paths or SQL queries
+- **Data corruption:** Data becomes unreliable
 
 ## ⚙️ Exploitation Process
 When clicking on a number in the survey page, the app sends a request with the selected value. We can upload an arbitrary amount in the _valeur_ field and get the flag.
 
 ```
-curl -s -X POST -d 'sujet=2&valeur=11' 'http://localhost:9090/index.php?page=survey' | grep flag
+curl -s -X POST -d 'sujet=2&valeur=11' 'http://BornToSec.com/index.php?page=survey' | grep flag
 ```
 
 ## 🔧 Fix

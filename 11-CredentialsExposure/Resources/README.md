@@ -3,11 +3,14 @@
 ## 📖 Vulnerability Explanation
 Credential exposure is a misconfiguration vulnerability that happens when private authentication information is exposed to non authorized users.
 
+In this exercise, we can find a username and hash combination publicly available. We can then use these to authenticate on the admin page.
+
 ## ⚙️ Exploitation Process
 
 - Enumerate the web directories via web fuzzing:
+
 ```
-ffuf -u 'http://localhost:9090/FUZZ' -w /sgoinfre/students/apena-ba/cybersecurity/SecLists/Discovery/Web-Content/big.txt -fs 975
+ffuf -u 'http://BornToSec.com/FUZZ' -w /sgoinfre/students/apena-ba/cybersecurity/SecLists/Discovery/Web-Content/big.txt -fs 975
 
         /'___\  /'___\           /'___\       
        /\ \__/ /\ \__/  __  __  /\ \__/       
@@ -20,7 +23,7 @@ ffuf -u 'http://localhost:9090/FUZZ' -w /sgoinfre/students/apena-ba/cybersecurit
 ________________________________________________
 
  :: Method           : GET
- :: URL              : http://localhost:9090/FUZZ
+ :: URL              : http://BornToSec.com/FUZZ
  :: Wordlist         : FUZZ: /sgoinfre/students/apena-ba/cybersecurity/SecLists/Discovery/Web-Content/big.txt
  :: Follow redirects : false
  :: Calibration      : false
@@ -46,15 +49,18 @@ whatever                [Status: 301, Size: 193, Words: 7, Lines: 8, Duration: 1
 
 ---
 
-We find a htpasswd file present in the ```whatever/``` directory. After downloading the file, we can see a username and hash combination.
+We find a htpasswd file in the ```whatever/``` directory. After downloading the file, we can see a username and hash combination.
 ```
 
 root:437394baff5aa33daa618be47b75cb49
 ```
 
 ---
+
 - Check the hash value:
+
 ![](./CrackStation.png)
+
 ---
 
 Use the credentials obtained to login on the ```admin/``` directory and get the flag.
@@ -64,21 +70,22 @@ In order to enumerate web directories we used ```ffuf```, a compiled web fuzzer 
 
 - https://github.com/ffuf/ffuf
 
-The wordlist we used part of the SecLists project, which is a recognised repository with multiple wordlists for various purposes.
+The wordlist we used is part of the SecLists project, which is a recognised repository with multiple wordlists for various purposes.
 
 - https://github.com/danielmiessler/SecLists.git
 
-We used ```https://crackstation.net/``` to crack the hash. This page doesn't really _crack_ the hash you provide, but performs a lookup on pre-computed hashes instead.
+We used https://crackstation.net/ to crack the hash. This page doesn't really _crack_ the hash you provide, but performs a lookup on pre-computed hashes instead.
 
 ## 🔧 Fix
-The file ```htpasswd``` or any file containing credentials should never be exposed to unauthorized users. Configuring nginx to restrict access to this file is recommended.
+The file ```htpasswd``` or any file containing credentials should never be exposed. Configuring nginx to protect this file prevents unauthorized access.
 
 ## ☝️🤓 Advanced explanation
-A properly configured nginx config file could look like this:
+A properly configured nginx config file would look like this:
+
 ```
 server {
     listen 80;
-    server_name bornToSec.com;
+    server_name BornToSec.com;
 
     root /var/www/html;
 
